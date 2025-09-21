@@ -37,43 +37,49 @@
    <script src="https://js.arcgis.com/4.26/"></script>
    <script>
         require(["esri/config", "esri/Map", "esri/views/MapView", "esri/widgets/Locate", "esri/widgets/Search", "esri/layers/FeatureLayer"], (esriConfig, esriMap, MapView, Locate, Search, FeatureLayer) => {
+        // Set API key for Esri services authentication
         esriConfig.apiKey = "AAPTxy8BH1VEsoebNVZXo8HurCu2TH84b2JPXGHcpnrENGUlsKXUHky6dWw4HwNY493BFbkT1_7FEN-JL1W_kmP6YCrGI4zwkE_q-vRWDzrXbsMuBXbwWa_pmzVFTYTfhsU_u2FaOba2JsC1xYy-IEjd_FjlxZnv1rTNmoieTI_iLCAVU3WBDsi8dry6_T4Aq_5I6j2E2Oc0UnBckMS1P2i-D9pAXRcPV79o7KTx_ysSpTR2rk_sSgeuJlYsEr56baXtAT1_VZvolxGF";
+        
+        // Create a new map with satellite basemap
         const map = new esriMap({
             basemap: "satellite"
         });
 
-        // Create featurelayer from feature service 
+        // Create feature layer from Survey123 data collection service
         const layer = new FeatureLayer({ 
-          // URL to the service 
-          url: "https://services.arcgis.com/HRPe58bUyBqyyiCt/arcgis/rest/services/survey123_64d9be4ff14f4d3b914bdd6a8505ac7c_results/FeatureServer" 
+            // URL points to the Survey123 feature service for data collection
+            url: "https://services.arcgis.com/HRPe58bUyBqyyiCt/arcgis/rest/services/survey123_64d9be4ff14f4d3b914bdd6a8505ac7c_results/FeatureServer" 
         });
 
         // Add the layer to the map
         map.add(layer);
+        
+        // CHALLENGE 1: Create MapView with center and zoom for initial extent
         const view = new MapView({
-            container: "viewDiv",
-            map: map,
-            zoom: 3
-        
-        
+            container: "viewDiv",              // HTML element to contain the map
+            map: map,                          // Reference to the map object
+            center: [-98.5795, 39.8283],      // Geographic center of United States [longitude, latitude]
+            zoom: 3                            // Zoom level (3 = country view)
         });
 
+        // CHALLENGE 2: Create Locate widget for "find my location" functionality
         const locateBtn = new Locate({
-          view: view
+            view: view
         });
 
         // Add the locate widget to the top left corner of the view
         view.ui.add(locateBtn, {
-          position: "top-left"
+            position: "top-left"
         });
 
+        // CHALLENGE 2: Create Search widget for address/place search functionality
         const searchWidget = new Search({
-          view: view
+            view: view
         });
 
         // Add the search widget to the top right corner of the view
         view.ui.add(searchWidget, {
-          position: "top-right"
+            position: "top-right"
         });
         });
    </script>
