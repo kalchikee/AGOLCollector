@@ -13,23 +13,73 @@
             height: 100%;
             width: 100%;
         }   
+
+        .addRecordBtn {
+          position: absolute;
+          z-index: 10;
+          top: 10px;
+          right: 10px;
+          background-color: #0079c1;
+          color: white;
+          padding: 8px 16px;
+          border: none;
+          border-radius: 4px;
+          font-size: 14px;
+          cursor: pointer;
+          text-decoration: none;
+        }
+
+        .addRecordBtn:hover {
+          background-color: #005a87;
+        }
    </style>
    <link rel="stylesheet" href="https://js.arcgis.com/4.26/esri/themes/light/main.css" />
    <script src="https://js.arcgis.com/4.26/"></script>
    <script>
-        require(["esri/Config", "esri/Map", "esri/views/MapView"], (esriConfig, esriMap, MapView) => {
+        require(["esri/config", "esri/Map", "esri/views/MapView", "esri/widgets/Locate", "esri/widgets/Search", "esri/layers/FeatureLayer"], (esriConfig, esriMap, MapView, Locate, Search, FeatureLayer) => {
         esriConfig.apiKey = "AAPTxy8BH1VEsoebNVZXo8HurCu2TH84b2JPXGHcpnrENGUlsKXUHky6dWw4HwNY493BFbkT1_7FEN-JL1W_kmP6YCrGI4zwkE_q-vRWDzrXbsMuBXbwWa_pmzVFTYTfhsU_u2FaOba2JsC1xYy-IEjd_FjlxZnv1rTNmoieTI_iLCAVU3WBDsi8dry6_T4Aq_5I6j2E2Oc0UnBckMS1P2i-D9pAXRcPV79o7KTx_ysSpTR2rk_sSgeuJlYsEr56baXtAT1_VZvolxGF";
         const map = new esriMap({
             basemap: "satellite"
         });
+
+        // Create featurelayer from feature service 
+        const layer = new FeatureLayer({ 
+          // URL to the service 
+          url: "https://services.arcgis.com/HRPe58bUyBqyyiCt/arcgis/rest/services/survey123_64d9be4ff14f4d3b914bdd6a8505ac7c_results/FeatureServer" 
+        });
+
+        // Add the layer to the map
+        map.add(layer);
         const view = new MapView({
             container: "viewDiv",
-            map: map
+            map: map,
+            zoom: 3
+        
+        
+        });
+
+        const locateBtn = new Locate({
+          view: view
+        });
+
+        // Add the locate widget to the top left corner of the view
+        view.ui.add(locateBtn, {
+          position: "top-left"
+        });
+
+        const searchWidget = new Search({
+          view: view
+        });
+
+        // Add the search widget to the top right corner of the view
+        view.ui.add(searchWidget, {
+          position: "top-right"
         });
         });
    </script>
   </head>
   <body>
+   <a href="https://survey123.arcgis.com/share/55a1dcb95cfe435a8b16cebfd83afef4" target="_blank" class="addRecordBtn">Add Record</a>
    <div id="viewDiv"></div>
   </body>
 </html>
